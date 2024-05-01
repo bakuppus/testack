@@ -1,0 +1,28 @@
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+        {{ if .Site.Params.options.collapsibleSidebar -}}
+            <ul class="list-unstyled collapsible-sidebar">
+            {{ $currentPage := . -}}
+            {{- $pageSplit := split .RelPermalink "/" -}}
+            {{ $currentService := cond (ge (len $pageSplit) 2) (index $pageSplit 2) "" }}
+            {{ $currentVersion := cond (ge (len $pageSplit) 3) (index $pageSplit 3) "" }}
+            {{ $currentResource := cond (ge (len $pageSplit) 4) (index $pageSplit 4) "" }}
+            
+            <!-- Find common and place it first -->
+            {{ range $service := sort .Site.Data.overview.services "name" "asc" }}
+                {{ if eq (lower $service.service_metadata.service.short_name) "common" }}
+                    {{ partial "sidebar/reference-menu-item.html" (dict "currentService" $currentService "currentVersion" $currentVersion "currentResource" $currentResource "service" $service) }}
+                {{ end -}}
+            {{ end -}}    
+
+            <hr />
+
+            {{ range $service := sort .Site.Data.overview.services "name" "asc" }}
+                {{ if not (eq (lower $service.service_metadata.service.short_name) "common" ) }}
+                    {{ partial "sidebar/reference-menu-item.html" (dict "currentService" $currentService "currentVersion" $currentVersion "currentResource" $currentResource "service" $service) }}
+                {{ end -}}
+            {{ end -}}
+            </ul>
+        {{ end -}}
+    </nav>
+</div>

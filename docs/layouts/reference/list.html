@@ -1,0 +1,28 @@
+{{ define "main" }}
+<div class="row justify-content-center">
+    {{ partial "sidebar/reference-menu.html" .}}
+    <div class="col-lg-11 col-xl-9 mx-xl-auto">
+        <article>
+            <h1 class="text">{{ .Title }}</h1>
+            <div class="text">{{ .Content }}</div>
+            <div class="card-list">
+                <!-- Find common and place it first -->
+                {{ range sort .Site.Data.overview.services "name" "asc" }}
+                    {{ if eq (lower .service_metadata.service.short_name) "common" }}
+                        {{ partial "sidebar/list-card" . }}
+                    {{ end -}}
+                {{ end }}
+
+                <hr />
+
+                {{ range sort .Site.Data.overview.services "name" "asc" }}
+                    {{ if not (eq (lower .service_metadata.service.short_name) "common" ) }}
+                        {{ partial "sidebar/list-card" . }}
+                    {{ end -}}
+                {{ end }}
+            </div>
+            
+        </article>
+    </div>
+</div>
+{{ end }}

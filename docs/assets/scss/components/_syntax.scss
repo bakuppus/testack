@@ -1,0 +1,7 @@
+.hljs {
+  background: lighten(#22272e, 15%);
+}
+
+[data-dark-mode] body .hljs {
+  background: $body-overlay-dark;
+}
